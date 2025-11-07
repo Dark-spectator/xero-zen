@@ -317,7 +317,7 @@ const Wizard = () => {
             <Button variant="outline" onClick={handleBack}>
               {currentStep === 1 ? "Back to Home" : "Previous"}
             </Button>
-            <Button onClick={handleNext} disabled={currentStep === 4}>
+            <Button onClick={handleNext}>
               {currentStep === 4 ? "Finish" : currentStep === 3 ? "Approve" : "Continue"}
             </Button>
           </div>
