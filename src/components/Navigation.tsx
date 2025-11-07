@@ -21,7 +21,7 @@ const Navigation = () => {
                 />
               </svg>
             </div>
-            <span className="text-xl font-bold text-primary-foreground">ReconcileAI</span>
+            <span className="text-xl font-bold text-primary-foreground">Reconcile Buddy</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
