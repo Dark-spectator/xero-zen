@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const Navigation = () => {
   return (
@@ -34,6 +35,9 @@ const Navigation = () => {
             <a href="#pricing" className="text-sm font-medium text-primary-foreground/90 hover:text-primary-foreground transition-colors">
               Pricing
             </a>
+            <Link to="/wizard" className="text-sm font-medium text-primary-foreground/90 hover:text-primary-foreground transition-colors">
+              Wizard
+            </Link>
           </div>
 
           <Button variant="outline" size="sm" className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground hover:text-primary">
