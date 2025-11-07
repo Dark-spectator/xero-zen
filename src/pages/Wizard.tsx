@@ -14,7 +14,48 @@ const Wizard = () => {
   const [csvData, setCsvData] = useState<Array<Record<string, string>>>([]);
   const [csvColumns, setCsvColumns] = useState<string[]>([]);
   const [columnMapping, setColumnMapping] = useState<Record<string, string>>({});
-  const [mappedData, setMappedData] = useState<Array<Record<string, string>>>([]);
+  const [mappedData, setMappedData] = useState<Array<Record<string, string>>>([
+    {
+      "Date": "2024-01-15",
+      "Contact Name": "Acme Corp",
+      "Amount": "$1,250.00",
+      "Description": "Monthly software subscription",
+      "Account Code": "400",
+      "Reference": "INV-2024-001"
+    },
+    {
+      "Date": "2024-01-18",
+      "Contact Name": "Tech Solutions Ltd",
+      "Amount": "$3,500.00",
+      "Description": "Consulting services - Q1",
+      "Account Code": "500",
+      "Reference": "INV-2024-002"
+    },
+    {
+      "Date": "2024-01-22",
+      "Contact Name": "Office Supplies Co",
+      "Amount": "$425.50",
+      "Description": "Office supplies and equipment",
+      "Account Code": "610",
+      "Reference": "INV-2024-003"
+    },
+    {
+      "Date": "2024-01-25",
+      "Contact Name": "Cloud Hosting Inc",
+      "Amount": "$899.00",
+      "Description": "Cloud hosting services",
+      "Account Code": "420",
+      "Reference": "INV-2024-004"
+    },
+    {
+      "Date": "2024-01-28",
+      "Contact Name": "Marketing Agency",
+      "Amount": "$2,750.00",
+      "Description": "Digital marketing campaign",
+      "Account Code": "700",
+      "Reference": "INV-2024-005"
+    }
+  ]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
