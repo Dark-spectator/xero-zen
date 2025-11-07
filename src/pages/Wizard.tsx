@@ -23,9 +23,10 @@ const Wizard = () => {
 
   const steps = [
     { id: 1, title: "Upload CSV", icon: Upload, color: "text-primary" },
-    { id: 2, title: "Review Transactions", icon: FileCheck, color: "text-accent" },
-    { id: 3, title: "Approve", icon: CheckCircle2, color: "text-accent" },
-    { id: 4, title: "Push to Xero", icon: Send, color: "text-accent" },
+    { id: 2, title: "Review Columns", icon: FileCheck, color: "text-accent" },
+    { id: 3, title: "Review Transactions", icon: CheckCircle2, color: "text-accent" },
+    { id: 4, title: "Approve", icon: CheckCircle2, color: "text-accent" },
+    { id: 5, title: "Push to Xero", icon: Send, color: "text-accent" },
   ];
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +49,7 @@ const Wizard = () => {
   };
 
   const handleNext = () => {
-    if (currentStep < 4) {
+    if (currentStep < 5) {
       setCurrentStep(currentStep + 1);
     }
   };
@@ -71,7 +72,7 @@ const Wizard = () => {
         </div>
 
         {/* Steps */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-12">
           {steps.map((step, index) => {
             const Icon = step.icon;
             const isActive = currentStep === step.id;
@@ -168,6 +169,20 @@ const Wizard = () => {
           {currentStep === 3 && (
             <div className="space-y-6">
               <div>
+                <h2 className="text-2xl font-bold mb-2">Review Transactions</h2>
+                <p className="text-muted-foreground">
+                  Review your imported transaction data
+                </p>
+              </div>
+              <div className="text-center py-12 text-muted-foreground">
+                Transaction data table will be implemented here
+              </div>
+            </div>
+          )}
+
+          {currentStep === 4 && (
+            <div className="space-y-6">
+              <div>
                 <h2 className="text-2xl font-bold mb-2">Approve Transactions</h2>
                 <p className="text-muted-foreground">
                   Review and approve AI-reconciled transactions
@@ -179,7 +194,7 @@ const Wizard = () => {
             </div>
           )}
 
-          {currentStep === 4 && (
+          {currentStep === 5 && (
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold mb-2">Push to Xero</h2>
@@ -198,8 +213,8 @@ const Wizard = () => {
             <Button variant="outline" onClick={handleBack}>
               {currentStep === 1 ? "Back to Home" : "Previous"}
             </Button>
-            <Button onClick={handleNext} disabled={currentStep === 4}>
-              {currentStep === 4 ? "Complete" : "Continue"}
+            <Button onClick={handleNext} disabled={currentStep === 5}>
+              {currentStep === 5 ? "Complete" : "Continue"}
             </Button>
           </div>
         </Card>
