@@ -255,6 +255,7 @@ const Wizard = () => {
             <TransactionTable 
               data={mappedData}
               columns={requiredColumns}
+              onDataChange={setMappedData}
             />
           )}
 
