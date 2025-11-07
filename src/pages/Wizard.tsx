@@ -4,12 +4,22 @@ import { Card } from "@/components/ui/card";
 import { Upload, FileCheck, CheckCircle2, Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import ColumnMapping from "@/components/ColumnMapping";
 
 const Wizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const requiredColumns = [
+    "Date",
+    "Contact Name",
+    "Amount",
+    "Description",
+    "Account Code",
+    "Reference",
+  ];
 
   const steps = [
     { id: 1, title: "Upload CSV", icon: Upload, color: "text-primary" },
@@ -152,17 +162,7 @@ const Wizard = () => {
           )}
 
           {currentStep === 2 && (
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Review Transactions</h2>
-                <p className="text-muted-foreground">
-                  Review and map your CSV columns to the correct fields
-                </p>
-              </div>
-              <div className="text-center py-12 text-muted-foreground">
-                Column mapping interface will be implemented here
-              </div>
-            </div>
+            <ColumnMapping requiredColumns={requiredColumns} />
           )}
 
           {currentStep === 3 && (
