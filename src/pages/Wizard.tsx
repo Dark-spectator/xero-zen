@@ -3,7 +3,6 @@ import { Upload, FileText, CheckCircle2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import ColumnMapping from "@/components/ColumnMapping";
 
 const Wizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -181,16 +180,11 @@ const Wizard = () => {
             {currentStep === 2 && (
               <>
                 <h2 className="text-2xl font-bold mb-6">Step 2: Review Transactions</h2>
-                <ColumnMapping 
-                  columns={[
-                    "Date",
-                    "Contact Name",
-                    "Amount",
-                    "Description",
-                    "Account Code",
-                    "Reference"
-                  ]} 
-                />
+                <div className="text-center py-12">
+                  <FileText className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground mb-6">AI is analyzing your transactions...</p>
+                  <p className="text-sm text-muted-foreground">This feature is coming soon!</p>
+                </div>
                 <div className="flex justify-between mt-8">
                   <Button variant="outline" onClick={() => setCurrentStep(1)}>
                     Previous
