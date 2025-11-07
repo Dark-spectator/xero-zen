@@ -81,12 +81,13 @@ const Wizard = () => {
               return (
                 <div key={step.id} className="relative">
                   <div
-                    className={`flex flex-col items-center text-center p-6 rounded-lg border-2 transition-all ${
+                    onClick={() => setCurrentStep(step.id)}
+                    className={`flex flex-col items-center text-center p-6 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
                       isActive
                         ? "border-primary bg-primary/5 shadow-md"
                         : isCompleted
                         ? "border-primary/50 bg-primary/5"
-                        : "border-border bg-background"
+                        : "border-border bg-background hover:border-primary/30"
                     }`}
                   >
                     <div
@@ -113,9 +114,11 @@ const Wizard = () => {
             })}
           </div>
 
-          {/* Upload Section */}
+          {/* Step Content */}
           <div className="bg-card border border-border rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6">Step 1: Upload Your CSV File</h2>
+            {currentStep === 1 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 1: Upload Your CSV File</h2>
             
             <input
               type="file"
@@ -163,14 +166,73 @@ const Wizard = () => {
               </div>
             )}
 
-            <div className="flex justify-between mt-8">
-              <Button variant="outline" onClick={() => navigate("/")}>
-                Back to Home
-              </Button>
-              <Button disabled={!uploadedFile} size="lg">
-                Continue to Review
-              </Button>
-            </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => navigate("/")}>
+                    Back to Home
+                  </Button>
+                  <Button disabled={!uploadedFile} size="lg" onClick={() => setCurrentStep(2)}>
+                    Continue to Review
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {currentStep === 2 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 2: Review Transactions</h2>
+                <div className="text-center py-12">
+                  <FileText className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground mb-6">AI is analyzing your transactions...</p>
+                  <p className="text-sm text-muted-foreground">This feature is coming soon!</p>
+                </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => setCurrentStep(1)}>
+                    Previous
+                  </Button>
+                  <Button size="lg" onClick={() => setCurrentStep(3)}>
+                    Continue to Approve
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {currentStep === 3 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 3: Approve Transaction</h2>
+                <div className="text-center py-12">
+                  <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground mb-6">Review and approve your transactions...</p>
+                  <p className="text-sm text-muted-foreground">This feature is coming soon!</p>
+                </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => setCurrentStep(2)}>
+                    Previous
+                  </Button>
+                  <Button size="lg" onClick={() => setCurrentStep(4)}>
+                    Continue to Push
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {currentStep === 4 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 4: Push to Xero</h2>
+                <div className="text-center py-12">
+                  <Send className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground mb-6">Ready to sync with your Xero account...</p>
+                  <p className="text-sm text-muted-foreground">This feature is coming soon!</p>
+                </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => setCurrentStep(3)}>
+                    Previous
+                  </Button>
+                  <Button size="lg" onClick={() => navigate("/")}>
+                    Complete
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
