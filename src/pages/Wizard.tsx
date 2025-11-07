@@ -3,6 +3,7 @@ import { Upload, FileText, CheckCircle2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import ColumnMapping from "@/components/ColumnMapping";
 
 const Wizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -81,12 +82,13 @@ const Wizard = () => {
               return (
                 <div key={step.id} className="relative">
                   <div
-                    className={`flex flex-col items-center text-center p-6 rounded-lg border-2 transition-all ${
+                    onClick={() => setCurrentStep(step.id)}
+                    className={`flex flex-col items-center text-center p-6 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
                       isActive
                         ? "border-primary bg-primary/5 shadow-md"
                         : isCompleted
                         ? "border-primary/50 bg-primary/5"
-                        : "border-border bg-background"
+                        : "border-border bg-background hover:border-primary/30"
                     }`}
                   >
                     <div
@@ -113,37 +115,40 @@ const Wizard = () => {
             })}
           </div>
 
-          {/* Upload Section */}
+          {/* Step Content */}
           <div className="bg-card border border-border rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6">Step 1: Upload Your CSV File</h2>
+            {currentStep === 1 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 1: Upload Your CSV File</h2>
             
-            <div className="border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-primary transition-colors">
-              <input
-                type="file"
-                id="csv-upload"
-                accept=".csv"
-                onChange={handleFileUpload}
-                className="hidden"
-              />
-              <label htmlFor="csv-upload" className="cursor-pointer">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Upload className="w-10 h-10 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-lg font-semibold mb-2">
-                      {uploadedFile ? uploadedFile.name : "Click to upload or drag and drop"}
-                    </p>
-                    <p className="text-sm text-muted-foreground">CSV files only (Max 10MB)</p>
-                  </div>
-                  {!uploadedFile && (
-                    <Button variant="default" size="lg" className="mt-4">
-                      Choose File
-                    </Button>
-                  )}
+            <input
+              type="file"
+              id="csv-upload"
+              accept=".csv"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            <label 
+              htmlFor="csv-upload" 
+              className="block border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-primary transition-colors cursor-pointer"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Upload className="w-10 h-10 text-primary" />
                 </div>
-              </label>
-            </div>
+                <div>
+                  <p className="text-lg font-semibold mb-2">
+                    {uploadedFile ? uploadedFile.name : "Click to upload or drag and drop"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">CSV files only (Max 10MB)</p>
+                </div>
+                {!uploadedFile && (
+                  <div className="mt-4 px-8 py-3 bg-primary text-primary-foreground rounded-md font-medium hover:bg-accent transition-colors shadow-[var(--shadow-soft)]">
+                    Choose File
+                  </div>
+                )}
+              </div>
+            </label>
 
             {uploadedFile && (
               <div className="mt-8 flex items-center justify-between p-4 bg-primary/5 rounded-lg border border-primary/20">
@@ -162,14 +167,78 @@ const Wizard = () => {
               </div>
             )}
 
-            <div className="flex justify-between mt-8">
-              <Button variant="outline" onClick={() => navigate("/")}>
-                Back to Home
-              </Button>
-              <Button disabled={!uploadedFile} size="lg">
-                Continue to Review
-              </Button>
-            </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => navigate("/")}>
+                    Back to Home
+                  </Button>
+                  <Button disabled={!uploadedFile} size="lg" onClick={() => setCurrentStep(2)}>
+                    Continue to Review
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {currentStep === 2 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 2: Review Transactions</h2>
+                <ColumnMapping 
+                  columns={[
+                    "Date",
+                    "Contact Name",
+                    "Amount",
+                    "Description",
+                    "Account Code",
+                    "Reference"
+                  ]} 
+                />
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => setCurrentStep(1)}>
+                    Previous
+                  </Button>
+                  <Button size="lg" onClick={() => setCurrentStep(3)}>
+                    Continue to Approve
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {currentStep === 3 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 3: Approve Transaction</h2>
+                <div className="text-center py-12">
+                  <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground mb-6">Review and approve your transactions...</p>
+                  <p className="text-sm text-muted-foreground">This feature is coming soon!</p>
+                </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => setCurrentStep(2)}>
+                    Previous
+                  </Button>
+                  <Button size="lg" onClick={() => setCurrentStep(4)}>
+                    Continue to Push
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {currentStep === 4 && (
+              <>
+                <h2 className="text-2xl font-bold mb-6">Step 4: Push to Xero</h2>
+                <div className="text-center py-12">
+                  <Send className="w-16 h-16 text-primary mx-auto mb-4" />
+                  <p className="text-lg text-muted-foreground mb-6">Ready to sync with your Xero account...</p>
+                  <p className="text-sm text-muted-foreground">This feature is coming soon!</p>
+                </div>
+                <div className="flex justify-between mt-8">
+                  <Button variant="outline" onClick={() => setCurrentStep(3)}>
+                    Previous
+                  </Button>
+                  <Button size="lg" onClick={() => navigate("/")}>
+                    Complete
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
