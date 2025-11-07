@@ -38,14 +38,6 @@ const Wizard = () => {
   };
 
   const handleNext = () => {
-    if (currentStep === 1 && !uploadedFile) {
-      toast({
-        title: "Upload required",
-        description: "Please upload a CSV file to continue",
-        variant: "destructive",
-      });
-      return;
-    }
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1);
     }
@@ -78,12 +70,13 @@ const Wizard = () => {
             return (
               <Card
                 key={step.id}
-                className={`p-6 transition-all ${
+                onClick={() => setCurrentStep(step.id)}
+                className={`p-6 transition-all cursor-pointer hover:shadow-lg ${
                   isActive
                     ? "border-primary bg-primary/5 shadow-lg scale-105"
                     : isCompleted
-                    ? "border-accent bg-accent/5"
-                    : "border-border bg-card"
+                    ? "border-accent bg-accent/5 hover:border-accent/50"
+                    : "border-border bg-card hover:border-primary/30"
                 }`}
               >
                 <div className="flex items-center gap-4">
@@ -158,14 +151,45 @@ const Wizard = () => {
             </div>
           )}
 
-          {currentStep > 1 && (
-            <div className="text-center py-12">
-              <h2 className="text-2xl font-bold mb-4">
-                {steps[currentStep - 1].title}
-              </h2>
-              <p className="text-muted-foreground mb-8">
-                This step will be implemented next
-              </p>
+          {currentStep === 2 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Review Transactions</h2>
+                <p className="text-muted-foreground">
+                  Review and map your CSV columns to the correct fields
+                </p>
+              </div>
+              <div className="text-center py-12 text-muted-foreground">
+                Column mapping interface will be implemented here
+              </div>
+            </div>
+          )}
+
+          {currentStep === 3 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Approve Transactions</h2>
+                <p className="text-muted-foreground">
+                  Review and approve AI-reconciled transactions
+                </p>
+              </div>
+              <div className="text-center py-12 text-muted-foreground">
+                Transaction approval interface will be implemented here
+              </div>
+            </div>
+          )}
+
+          {currentStep === 4 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Push to Xero</h2>
+                <p className="text-muted-foreground">
+                  Connect and sync approved transactions to Xero
+                </p>
+              </div>
+              <div className="text-center py-12 text-muted-foreground">
+                Xero integration will be implemented here
+              </div>
             </div>
           )}
 
@@ -174,7 +198,7 @@ const Wizard = () => {
             <Button variant="outline" onClick={handleBack}>
               {currentStep === 1 ? "Back to Home" : "Previous"}
             </Button>
-            <Button onClick={handleNext} disabled={currentStep === 1 && !uploadedFile}>
+            <Button onClick={handleNext} disabled={currentStep === 4}>
               {currentStep === 4 ? "Complete" : "Continue"}
             </Button>
           </div>
