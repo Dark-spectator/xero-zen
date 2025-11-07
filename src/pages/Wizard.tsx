@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, FileCheck, CheckCircle2, Send } from "lucide-react";
+import { Upload, FileCheck, CheckCircle2, Send, Download } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import ColumnMapping from "@/components/ColumnMapping";
@@ -272,7 +272,7 @@ const Wizard = () => {
                 <Card className="p-6 hover:shadow-lg transition-shadow">
                   <div className="space-y-4">
                     <div className="p-4 rounded-full bg-primary/10 w-fit">
-                      <Upload className="h-8 w-8 text-primary" />
+                      <Download className="h-8 w-8 text-primary" />
                     </div>
                     <div>
                       <h3 className="text-xl font-semibold mb-2">Download Xero CSV</h3>
