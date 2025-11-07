@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Upload, FileCheck, CheckCircle2, Send } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import ColumnMapping from "@/components/ColumnMapping";
+import TransactionTable from "@/components/TransactionTable";
+import Papa from "papaparse";
 
 const Wizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [csvData, setCsvData] = useState<Array<Record<string, string>>>([]);
+  const [csvColumns, setCsvColumns] = useState<string[]>([]);
+  const [columnMapping, setColumnMapping] = useState<Record<string, string>>({});
+  const [mappedData, setMappedData] = useState<Array<Record<string, string>>>([]);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -40,12 +46,47 @@ const Wizard = () => {
         return;
       }
       setUploadedFile(file);
-      toast({
-        title: "File uploaded successfully",
-        description: `${file.name} (${(file.size / 1024).toFixed(2)} KB)`,
+      
+      // Parse CSV file
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          const data = results.data as Array<Record<string, string>>;
+          const columns = results.meta.fields || [];
+          
+          setCsvData(data);
+          setCsvColumns(columns);
+          
+          toast({
+            title: "File uploaded successfully",
+            description: `${file.name} - ${data.length} rows, ${columns.length} columns`,
+          });
+        },
+        error: (error) => {
+          toast({
+            title: "Error parsing CSV",
+            description: error.message,
+            variant: "destructive",
+          });
+        },
       });
     }
   };
+
+  useEffect(() => {
+    // When column mapping changes, apply it to create mapped data
+    if (Object.keys(columnMapping).length > 0 && csvData.length > 0) {
+      const mapped = csvData.map((row) => {
+        const mappedRow: Record<string, string> = {};
+        Object.entries(columnMapping).forEach(([requiredCol, csvCol]) => {
+          mappedRow[requiredCol] = row[csvCol] || "";
+        });
+        return mappedRow;
+      });
+      setMappedData(mapped);
+    }
+  }, [columnMapping, csvData]);
 
   const handleNext = () => {
     if (currentStep < 4) {
@@ -162,21 +203,18 @@ const Wizard = () => {
           )}
 
           {currentStep === 2 && (
-            <ColumnMapping requiredColumns={requiredColumns} />
+            <ColumnMapping 
+              requiredColumns={requiredColumns}
+              csvColumns={csvColumns}
+              onMappingChange={setColumnMapping}
+            />
           )}
 
           {currentStep === 3 && (
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-2xl font-bold mb-2">Review Transactions</h2>
-                <p className="text-muted-foreground">
-                  Review your imported transaction data
-                </p>
-              </div>
-              <div className="text-center py-12 text-muted-foreground">
-                Transaction data table will be implemented here
-              </div>
-            </div>
+            <TransactionTable 
+              data={mappedData}
+              columns={requiredColumns}
+            />
           )}
 
           {currentStep === 4 && (

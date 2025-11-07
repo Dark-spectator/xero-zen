@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import {
   Select,
@@ -10,9 +11,40 @@ import { Calendar, User, DollarSign, FileText, Hash, Tag, ChevronRight, Target }
 
 interface ColumnMappingProps {
   requiredColumns: string[];
+  csvColumns: string[];
+  onMappingChange?: (mapping: Record<string, string>) => void;
 }
 
-const ColumnMapping = ({ requiredColumns }: ColumnMappingProps) => {
+const ColumnMapping = ({ requiredColumns, csvColumns, onMappingChange }: ColumnMappingProps) => {
+  const [mappings, setMappings] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    // Auto-map columns with exact or similar names
+    const autoMapping: Record<string, string> = {};
+    requiredColumns.forEach((reqCol) => {
+      const match = csvColumns.find(
+        (csvCol) => csvCol.toLowerCase() === reqCol.toLowerCase()
+      );
+      if (match) {
+        autoMapping[reqCol] = match;
+      }
+    });
+    setMappings(autoMapping);
+  }, [csvColumns, requiredColumns]);
+
+  useEffect(() => {
+    if (onMappingChange) {
+      onMappingChange(mappings);
+    }
+  }, [mappings, onMappingChange]);
+
+  const handleMappingChange = (column: string, value: string) => {
+    setMappings((prev) => ({
+      ...prev,
+      [column]: value,
+    }));
+  };
+
   const columnIcons: Record<string, any> = {
     "Date": Calendar,
     "Contact Name": User,
@@ -56,20 +88,25 @@ const ColumnMapping = ({ requiredColumns }: ColumnMappingProps) => {
 
                 {/* Dropdown */}
                 <div className="w-64 shrink-0">
-                  <Select>
+                  <Select 
+                    value={mappings[column] || ""}
+                    onValueChange={(value) => handleMappingChange(column, value)}
+                  >
                     <SelectTrigger className="bg-background border-border">
-                      <SelectValue placeholder="Column name" />
+                      <SelectValue placeholder="Select column" />
                     </SelectTrigger>
                     <SelectContent className="bg-popover border-border z-50">
-                      <SelectItem value={column.toLowerCase().replace(/\s+/g, '_')}>
-                        {column}
-                      </SelectItem>
-                      <SelectItem value="date_column">Date Column</SelectItem>
-                      <SelectItem value="name_column">Name Column</SelectItem>
-                      <SelectItem value="amount_column">Amount Column</SelectItem>
-                      <SelectItem value="desc_column">Description Column</SelectItem>
-                      <SelectItem value="code_column">Code Column</SelectItem>
-                      <SelectItem value="ref_column">Reference Column</SelectItem>
+                      {csvColumns.length === 0 ? (
+                        <SelectItem value="none" disabled>
+                          No columns available
+                        </SelectItem>
+                      ) : (
+                        csvColumns.map((col) => (
+                          <SelectItem key={col} value={col}>
+                            {col}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
