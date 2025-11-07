@@ -6,6 +6,10 @@ import heroIllustration from "@/assets/hero-illustration.png";
 const Hero = () => {
   const navigate = useNavigate();
 
+  const handleGetStarted = () => {
+    navigate("/wizard");
+  };
+
   return (
     <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-secondary via-secondary/50 to-background">
       <div className="container mx-auto px-6">
@@ -20,7 +24,7 @@ const Hero = () => {
               Review, approve, and push directly to Xero in minutes—not hours.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="group" onClick={() => navigate("/wizard")}>
+              <Button size="lg" className="group" onClick={handleGetStarted}>
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
