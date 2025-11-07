@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import heroIllustration from "@/assets/hero-illustration.png";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-br from-secondary via-secondary/50 to-background">
       <div className="container mx-auto px-6">
@@ -17,7 +20,7 @@ const Hero = () => {
               Review, approve, and push directly to Xero in minutes—not hours.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="group">
+              <Button size="lg" className="group" onClick={() => navigate("/wizard")}>
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
