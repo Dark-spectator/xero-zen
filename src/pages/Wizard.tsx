@@ -264,11 +264,50 @@ const Wizard = () => {
               <div>
                 <h2 className="text-2xl font-bold mb-2">Push to Xero</h2>
                 <p className="text-muted-foreground">
-                  Connect and sync approved transactions to Xero
+                  Download your reconciled transactions or upload directly to Xero
                 </p>
               </div>
-              <div className="text-center py-12 text-muted-foreground">
-                Xero integration will be implemented here
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-8">
+                <Card className="p-6 hover:shadow-lg transition-shadow">
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-full bg-primary/10 w-fit">
+                      <Upload className="h-8 w-8 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">Download Xero CSV</h3>
+                      <p className="text-muted-foreground text-sm">
+                        Download your transactions as a CSV file formatted for Xero import
+                      </p>
+                    </div>
+                    <Button className="w-full">
+                      Download Xero CSV
+                    </Button>
+                  </div>
+                </Card>
+
+                <Card className="p-6 hover:shadow-lg transition-shadow">
+                  <div className="space-y-4">
+                    <div className="p-4 rounded-full bg-accent/10 w-fit">
+                      <Send className="h-8 w-8 text-accent-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">Upload to Xero</h3>
+                      <p className="text-muted-foreground text-sm">
+                        Directly upload your transactions to your Xero account
+                      </p>
+                    </div>
+                    <Button className="w-full" variant="secondary">
+                      Upload to Xero
+                    </Button>
+                  </div>
+                </Card>
+              </div>
+
+              <div className="bg-muted/50 border border-border rounded-lg p-4">
+                <p className="text-sm text-muted-foreground text-center">
+                  {mappedData.length} transactions ready to be pushed to Xero
+                </p>
               </div>
             </div>
           )}
